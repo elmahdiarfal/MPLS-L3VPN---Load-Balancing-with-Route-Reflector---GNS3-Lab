@@ -1,0 +1,45 @@
+
+
+enable
+configure terminal
+hostname SW
+
+! Create VLANs 11 and 12
+vlan 11
+ name VLAN11
+exit
+vlan 12
+ name VLAN12
+exit
+
+! Configure interfaces connected to RB-CE1, RB-CE2, and RB-C as trunk ports
+! Interface connected to TY-CE1
+interface GigabitEthernet0/0
+ description to-RB-CE1
+ switchport mode trunk
+ switchport trunk allowed vlan 11,12
+ no shutdown
+exit
+!
+
+! Interface connected to RB-CE2
+interface GigabitEthernet0/1
+ description to-RB-CE2
+ switchport mode trunk
+ switchport trunk allowed vlan 11,12
+ no shutdown
+exit
+
+! Interface connected to RB-C
+interface GigabitEthernet0/2
+ description to-RB-C
+ switchport mode trunk
+ switchport trunk allowed vlan 11,12
+ no shutdown
+exit
+
+no ip domain-lookup
+exit
+end
+copy running-config startup-config
+

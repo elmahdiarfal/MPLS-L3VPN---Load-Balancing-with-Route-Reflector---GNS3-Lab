@@ -1,0 +1,69 @@
+
+
+enable
+configure terminal
+hostname SP-RR
+ip vrf CUST-A
+ rd 100:1
+ route-target export 1:100
+ route-target import 1:100
+exit
+no ip domain lookup
+interface Loopback0
+ ip address 172.16.0.1 255.255.255.255
+exit
+interface GigabitEthernet0/0
+ description to RB-PE1
+ ip address 172.16.10.1 255.255.255.252
+ mpls ip
+exit
+interface GigabitEthernet0/1
+ description to RB-PE2
+ ip address 172.16.20.1 255.255.255.252
+ mpls ip
+exit
+interface GigabitEthernet0/2
+ description TO-CB-PE
+ ip address 172.16.30.1 255.255.255.252
+ mpls ip
+exit
+router ospf 1
+ log-adjacency-changes
+ network 172.16.0.0 0.0.255.255 area 0
+exit
+router bgp 100
+ no synchronization
+ bgp log-neighbor-changes
+ neighbor 172.16.1.1 remote-as 100
+ neighbor 172.16.1.1 update-source Loopback0
+ neighbor 172.16.1.1 route-reflector-client
+ neighbor 172.16.2.1 remote-as 100
+ neighbor 172.16.2.1 update-source Loopback0
+ neighbor 172.16.2.1 route-reflector-client
+ neighbor 172.16.3.1 remote-as 100
+ neighbor 172.16.3.1 update-source Loopback0
+ neighbor 172.16.3.1 route-reflector-client
+ neighbor 172.16.4.1 remote-as 100
+ neighbor 172.16.4.1 update-source Loopback0
+ neighbor 172.16.4.1 route-reflector-client
+ no auto-summary
+ address-family vpnv4
+  neighbor 172.16.1.1 activate
+  neighbor 172.16.1.1 send-community both
+  neighbor 172.16.1.1 route-reflector-client
+  neighbor 172.16.2.1 activate
+  neighbor 172.16.2.1 send-community both
+  neighbor 172.16.2.1 route-reflector-client
+  neighbor 172.16.3.1 activate
+  neighbor 172.16.3.1 send-community both
+  neighbor 172.16.3.1 route-reflector-client
+  neighbor 172.16.4.1 activate
+  neighbor 172.16.4.1 send-community both
+  neighbor 172.16.4.1 route-reflector-client
+ exit-address-family
+exit
+mpls ldp router-id Loopback0 force
+
+exit
+end
+copy running-config startup-config

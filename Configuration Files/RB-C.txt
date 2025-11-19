@@ -1,0 +1,20 @@
+
+
+enable
+configure terminal
+hostname RB-C
+no ip domain lookup
+interface GigabitEthernet0/0.11
+ encapsulation dot1Q 11
+ ip address 192.168.11.1 255.255.255.0
+exit
+interface GigabitEthernet0/0.12
+ encapsulation dot1Q 12
+ ip address 192.168.12.1 255.255.255.0
+exit
+ip route 0.0.0.0 0.0.0.0 192.168.11.254
+exit
+end
+
+
+copy running-config startup-config

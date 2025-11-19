@@ -1,0 +1,32 @@
+
+
+enable
+configure terminal
+hostname RB-CE1
+no ip domain lookup
+interface Loopback0
+ ip address 10.0.1.1 255.255.255.255
+exit
+interface GigabitEthernet0/0
+ description to RB-PE1
+ ip address 10.0.10.2 255.255.255.252
+exit
+interface GigabitEthernet0/1.11
+ encapsulation dot1Q 11
+ ip address 192.168.11.254 255.255.255.0
+exit
+interface GigabitEthernet0/1.12
+ encapsulation dot1Q 12
+ ip address 192.168.12.254 255.255.255.0
+exit
+router bgp 65001
+ no synchronization
+ bgp log-neighbor-changes
+ network 192.168.11.0
+ network 192.168.12.0
+ neighbor 10.0.10.1 remote-as 100
+ no auto-summary
+exit
+end
+copy running-config startup-config
+

@@ -1,0 +1,57 @@
+
+
+
+enable
+configure terminal
+hostname CB-PE
+ip vrf CUST-A
+ rd 100:1
+ route-target export 1:100
+ route-target import 1:100
+exit
+no ip domain lookup
+interface Loopback0
+ ip address 172.16.3.1 255.255.255.255
+exit
+interface GigabitEthernet0/2
+ description TO-CB-CE
+ ip vrf forwarding CUST-A
+ ip address 10.0.30.1 255.255.255.252
+exit
+interface GigabitEthernet0/1
+ description TO-TG-PE
+ ip address 172.16.40.1 255.255.255.252
+exit
+interface GigabitEthernet0/0
+ ip address 172.16.30.2 255.255.255.252
+ mpls ip
+exit
+router ospf 1
+ log-adjacency-changes
+ network 172.16.0.0 0.0.255.255 area 0
+exit
+router bgp 100
+ no synchronization
+ bgp log-neighbor-changes
+ neighbor 172.16.0.1 remote-as 100
+ neighbor 172.16.0.1 update-source Loopback0
+ neighbor 172.16.0.1 soft-reconfiguration inbound
+ no auto-summary
+ address-family vpnv4
+  neighbor 172.16.0.1 activate
+  neighbor 172.16.0.1 send-community both
+ exit-address-family
+ address-family ipv4 vrf CUST-A
+  neighbor 10.0.30.2 remote-as 65002
+  neighbor 10.0.30.2 activate
+  neighbor 10.0.30.2 soft-reconfiguration inbound
+  maximum-paths eibgp 2
+  no synchronization
+ exit-address-family
+exit
+mpls ldp router-id Loopback0 force
+exit
+
+
+copy running-config startup-config
+

@@ -1,0 +1,49 @@
+
+
+enable
+configure terminal
+hostname RB-PE1
+ip vrf CUST-A
+ rd 100:101
+ route-target export 1:100
+ route-target import 1:100
+exit
+no ip domain lookup
+interface Loopback0
+ ip address 172.16.1.1 255.255.255.255
+exit
+interface GigabitEthernet0/1
+ description to RB-CE1
+ ip vrf forwarding CUST-A
+ ip address 10.0.10.1 255.255.255.252
+exit
+interface GigabitEthernet0/0
+ description to SP-RR
+ ip address 172.16.10.2 255.255.255.252
+ mpls ip
+exit
+router ospf 1
+ log-adjacency-changes
+ network 172.16.0.0 0.0.255.255 area 0
+exit
+router bgp 100
+ no synchronization
+ bgp log-neighbor-changes
+ neighbor 172.16.0.1 remote-as 100
+ neighbor 172.16.0.1 update-source Loopback0
+ no auto-summary
+ address-family vpnv4
+  neighbor 172.16.0.1 activate
+  neighbor 172.16.0.1 send-community both
+ exit-address-family
+ address-family ipv4 vrf CUST-A
+  neighbor 10.0.10.2 remote-as 65001
+  neighbor 10.0.10.2 activate
+  neighbor 10.0.10.2 soft-reconfiguration inbound
+  no synchronization
+ exit-address-family
+exit
+mpls ldp router-id Loopback0 force
+exit
+end
+copy running-config startup-config

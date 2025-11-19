@@ -1,0 +1,23 @@
+
+
+enable
+configure terminal
+hostname CB-CE
+no ip domain lookup
+interface Loopback0
+ ip address 10.0.3.1 255.255.255.255
+exit
+interface GigabitEthernet0/0
+ description to CB-PE
+ ip address 10.0.30.2 255.255.255.252
+exit
+router bgp 65002
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.3.1 mask 255.255.255.255
+ neighbor 10.0.30.1 remote-as 100
+ no auto-summary
+exit
+end
+copy running-config startup-config
+
