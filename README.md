@@ -17,14 +17,14 @@ This GNS3 lab demonstrates an advanced MPLS L3VPN implementation with multiple c
 - **BGP** as PE-CE Routing Protocol
 - **OSPF** as SP IGP
 
-## Why This Lab
+## ⚠️ Why This Lab
 Load balancing traffic is crucial for:
 - **Bandwidth optimization** - Utilizing multiple available paths
 - **Redundancy** - Automatic failover if one path fails
 - **Performance** - Distributing traffic to prevent congestion
 - **Cost efficiency** - Maximizing existing infrastructure
 
-## Topology
+## 🌐 Topology
 ![Topology](Topology.png)
 
 ### Core Components
@@ -34,7 +34,7 @@ Load balancing traffic is crucial for:
 - **Core Switch**: SW for VLAN connectivity
 - **Customer Router**: RB-C for internal routing
 
-## Objectives & Learning Outcomes
+## ✅ Objectives & Learning Outcomes
 
 ### Primary Objectives
 1. Implement MPLS L3VPN across multiple customer sites
@@ -53,7 +53,7 @@ Load balancing traffic is crucial for:
 - BGP as PE-CE Routing Protocol
 - LDP for label distribution
 
-## Project Summary
+## 🚀 Project Summary
 
 This lab creates a comprehensive Service Provider network connecting four customer sites:
 - **Two HQ SP Connections** (RB-CE1, RB-CE2)
@@ -61,7 +61,7 @@ This lab creates a comprehensive Service Provider network connecting four custom
 - **Route Reflector** (SP-RR) centralizing VPNv4 route distribution
 - **Load balancing** achieved through multiple paths and eibgp maximum-paths
 
-## Requirements
+## ⚠️ Requirements
 
 ### Software & Tools
 - **GNS3** & GNS3 VM
@@ -73,7 +73,7 @@ This lab creates a comprehensive Service Provider network connecting four custom
 - **CPU**: 2 cores minimum
 - **Storage**: 20GB free space
 
-## Addressing Plan
+## 🌍 Addressing Plan
 
 ### MPLS Core Network (OSPF Area 0)
 | Device | Interface | IP Address | Subnet Mask |
@@ -97,72 +97,72 @@ This lab creates a comprehensive Service Provider network connecting four custom
 - **VLAN 12**: 192.168.12.0/24
 - **Loopbacks**: Various 10.0.x.1/32 addresses
 
-## Verification Commands
+## 🔧 Verification Commands
 
 ### MPLS & LDP Verification
-# Check MPLS interfaces
+#### Check MPLS interfaces
 `show mpls interfaces`
 
-# Verify LDP neighbors
+#### Verify LDP neighbors
 `show mpls ldp neighbor`
 
-# Check LDP bindings
+#### Check LDP bindings
 `show mpls ldp bindings`
 
-# Verify label forwarding table
+#### Verify label forwarding table
 `show mpls forwarding-table`
 
 ### BGP & VPNv4 Verification
-# Check BGP neighbors
+#### Check BGP neighbors
 `show bgp vpnv4 unicast all neighbors`
 `show bgp vpnv4 unicast all summary`
 
-# Verify VPNv4 routes
+#### Verify VPNv4 routes
 `show bgp vpnv4 unicast all`
 
-# Check VRF-specific routes
+#### Check VRF-specific routes
 `show bgp vpnv4 unicast vrf CUST-A`
 
-# Verify route reflector clients
+#### Verify route reflector clients
 `show bgp vpnv4 unicast all neighbors | include Route-Reflector`
 
 ### VRF & Routing Verification
-# Verify VRF configuration
+#### Verify VRF configuration
 `show vrf detail`
 
-# Check VRF routing table
+#### Check VRF routing table
 `show ip route vrf CUST-A`
 
-# Verify CEF for VRF
+#### Verify CEF for VRF
 `show ip cef vrf CUST-A`
 
-# Check VRF interfaces
+#### Check VRF interfaces
 `show ip interface brief | include VRF`
 
 ### OSPF Verification
-# Verify OSPF neighbors
+#### Verify OSPF neighbors
 `show ip ospf neighbor`
 
-# Check OSPF database
+#### Check OSPF database
 `show ip ospf database`
 
-# Verify OSPF routes
+#### Verify OSPF routes
 `show ip route ospf`
 
 ### Load Balancing Verification
-# Check load balancing paths
+#### Check load balancing paths
 `show ip route vrf CUST-A`
 `show ip cef vrf CUST-A <destination-ip> detail`
 
-# Verify BGP multipath
+#### Verify BGP multipath
 `show bgp vpnv4 unicast vrf CUST-A <prefix>`
 
 ### End-to-End Connectivity Tests
-# From CE routers, test connectivity across VPN
+#### From CE routers, test connectivity across VPN
 `ping vrf CUST-A <remote-CE-ip>`
 `traceroute vrf CUST-A <remote-CE-ip>`
 
-## How to Import and Run in GNS3
+## ⚙️ How to Import and Run in GNS3
 
 ### Installation Steps
 
@@ -188,7 +188,7 @@ This lab creates a comprehensive Service Provider network connecting four custom
 - Confirm LDP sessions are active
 - Validate BGP neighbor relationships
 
-## Notes
+## 📚 Notes
 
 ### Important Considerations
 - **Convergence Time**: Allow sufficient time for protocol convergence (2-5 minutes)
