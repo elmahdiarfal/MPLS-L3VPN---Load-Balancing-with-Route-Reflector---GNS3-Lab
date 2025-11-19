@@ -1,0 +1,2 @@
+# MPLS-L3VPN---Load-Balancing-with-Route-Reflector---GNS3-Lab
+This GNS3 lab demonstrates an advanced MPLS L3VPN implementation with multiple customer sites, Route Reflector (RR) architecture, and path load balancing capabilities. The project showcases a real-world Service Provider (SP) network connecting multiple enterprise branches with different Autonomous Systems (AS) through a robust MPLS backbone.
