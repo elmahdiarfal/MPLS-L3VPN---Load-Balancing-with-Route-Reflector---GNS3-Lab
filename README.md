@@ -1,30 +1,23 @@
-# MPLS L3VPN with Route Reflector and Load Balancing - GNS3 Lab
+# MPLS L3VPN with Route Reflector and Load Balancing - GNS3 Lab 🛠️
 
 **Author**: El Mahdi ARFAL  
 **Academic Year**: 2025/2026  
 **Institution**: Institut National des Postes et Télécommunications
 
-## Project Overview
+## 🚀 Project Overview
 
 This GNS3 lab demonstrates an advanced MPLS L3VPN implementation with multiple customer sites, Route Reflector (RR) architecture, and path load balancing capabilities. The project showcases a real-world Service Provider (SP) network connecting multiple enterprise branches with different Autonomous Systems (AS) through a robust MPLS backbone.
 
-### Key Achievements
+### ✅ Key Achievements
 - **MPLS L3VPN** implementation connecting multiple customer sites
 - **Route Reflector** deployment for scalable iBGP routing
-- **Load balancing** across multiple paths using eBGP and iBGP
+- **Load balancing** across multiple paths
 - **Multi-AS** environment with different customer networks
 - **VRF** isolation and VPNv4 route distribution
+- **BGP** as PE-CE Routing Protocol
+- **OSPF** as SP IGP
 
-## Why This Lab Matters
-
-### Business Context
-Enterprises with multiple geographically dispersed branches require secure, scalable connectivity. MPLS L3VPN provides:
-- **Site-to-site connectivity** with the appearance of a private network
-- **Traffic isolation** between different customers
-- **Scalability** through route reflection
-- **Optimal path utilization** through load balancing
-
-### Technical Justification
+## Why This Lab
 Load balancing traffic is crucial for:
 - **Bandwidth optimization** - Utilizing multiple available paths
 - **Redundancy** - Automatic failover if one path fails
@@ -32,7 +25,7 @@ Load balancing traffic is crucial for:
 - **Cost efficiency** - Maximizing existing infrastructure
 
 ## Topology
-
+![Topology](Topology.png)
 
 ### Core Components
 - **PE Routers**: RB-PE1, RB-PE2, CB-PE, TG-PE (Provider Edge)
@@ -57,13 +50,14 @@ Load balancing traffic is crucial for:
 - VRF configuration and route target communities
 - Load balancing techniques in MPLS networks
 - OSPF as IGP in MPLS backbone
+- BGP as PE-CE Routing Protocol
 - LDP for label distribution
 
 ## Project Summary
 
 This lab creates a comprehensive Service Provider network connecting four customer sites:
-- **Two main branches** (RB-CE1, RB-CE2) with VLAN segmentation
-- **Additional sites** (CB-CE, TG-CE) for extended connectivity
+- **Two HQ SP Connections** (RB-CE1, RB-CE2)
+- **Branches** (CB-CE, TG-CE) for extended connectivity
 - **Route Reflector** (SP-RR) centralizing VPNv4 route distribution
 - **Load balancing** achieved through multiple paths and eibgp maximum-paths
 
@@ -75,8 +69,8 @@ This lab creates a comprehensive Service Provider network connecting four custom
 - **Cisco IOSv 15.9(3)M9** image: `vios-adventerprisek9-m.spa.159-3.m9`
 
 ### Hardware Recommendations
-- **RAM**: 8GB minimum, 16GB recommended
-- **CPU**: 4 cores minimum
+- **RAM**: 8GB minimum
+- **CPU**: 2 cores minimum
 - **Storage**: 20GB free space
 
 ## Addressing Plan
@@ -84,26 +78,26 @@ This lab creates a comprehensive Service Provider network connecting four custom
 ### MPLS Core Network (OSPF Area 0)
 | Device | Interface | IP Address | Subnet Mask |
 |--------|-----------|------------|-------------|
-| SP-RR | Lo0 | 172.16.0.1 | 255.255.255.255 |
-| RB-PE1 | Lo0 | 172.16.1.1 | 255.255.255.255 |
-| RB-PE2 | Lo0 | 172.16.2.1 | 255.255.255.255 |
-| CB-PE | Lo0 | 172.16.3.1 | 255.255.255.255 |
-| TG-PE | Lo0 | 172.16.4.1 | 255.255.255.255 |
+| SP-RR  | Lo0       | 172.16.0.1 | 255.255.255.255 |
+| RB-PE1 | Lo0       | 172.16.1.1 | 255.255.255.255 |
+| RB-PE2 | Lo0       | 172.16.2.1 | 255.255.255.255 |
+| CB-PE  | Lo0       | 172.16.3.1 | 255.255.255.255 |
+| TG-PE  | Lo0       | 172.16.4.1 | 255.255.255.255 |
 
 ### PE-CE Connections
-| Connection | PE IP | CE IP | Subnet |
-|------------|-------|-------|--------|
-| RB-PE1 ↔ RB-CE1 | 10.0.10.1 | 10.0.10.2 | /30 |
-| RB-PE2 ↔ RB-CE2 | 10.0.20.1 | 10.0.20.2 | /30 |
-| CB-PE ↔ CB-CE | 10.0.30.1 | 10.0.30.2 | /30 |
-| TG-PE ↔ TG-CE | 10.0.40.1 | 10.0.40.2 | /30 |
+| Connection      | PE IP     | CE IP     | Subnet |
+|------------     |-------    |-------    |--------|
+| RB-PE1 ↔ RB-CE1 | 10.0.10.1 | 10.0.10.2 | /30    |
+| RB-PE2 ↔ RB-CE2 | 10.0.20.1 | 10.0.20.2 | /30    |
+| CB-PE ↔ CB-CE   | 10.0.30.1 | 10.0.30.2 | /30    |
+| TG-PE ↔ TG-CE   | 10.0.40.1 | 10.0.40.2 | /30    |
 
 ### Customer Networks
 - **VLAN 11**: 192.168.11.0/24
 - **VLAN 12**: 192.168.12.0/24
 - **Loopbacks**: Various 10.0.x.1/32 addresses
 
-## Comprehensive Verification Commands
+## Verification Commands
 
 ### MPLS & LDP Verification
 # Check MPLS interfaces
@@ -202,23 +196,17 @@ This lab creates a comprehensive Service Provider network connecting four custom
 - **Load Balancing**: Configured using `maximum-paths eibgp 2` on PE routers
 - **VRF Consistency**: Ensure route targets match across all PEs for proper route distribution
 
-### Troubleshooting Tips
-- If VPN routes aren't propagating, check route-target import/export policies
-- Verify LDP is enabled on core interfaces with `mpls ip`
-- Ensure BGP neighbors are in established state
-- Check VRF forwarding on PE-CE interfaces
-
 ## Devices Used
 
-| Device | Role | Function |
-|--------|------|----------|
-| RB-PE1, RB-PE2 | Provider Edge | Customer connectivity, VRF instances |
-| CB-PE, TG-PE | Provider Edge | Additional customer sites |
-| SP-RR | Route Reflector | Centralized BGP route reflection |
-| RB-CE1, RB-CE2 | Customer Edge | Branch routers with VLANs |
-| CB-CE, TG-CE | Customer Edge | Additional customer routers |
-| SW | Layer 2 Switch | VLAN trunking between devices |
-| RB-C | Customer Router | Internal routing for VLANs |
+| Device         | Role            | Function |
+|--------        |------           |----------|
+| RB-PE1, RB-PE2 | Provider Edge   | Customer connectivity, VRF instances |
+| CB-PE, TG-PE   | Provider Edge   | Additional customer sites |
+| SP-RR          | Route Reflector | Centralized BGP route reflection |
+| RB-CE1, RB-CE2 | Customer Edge   | Branch routers with VLANs |
+| CB-CE, TG-CE   | Customer Edge   | Additional customer routers |
+| SW             | Layer 2 Switch  | VLAN trunking between devices |
+| RB-C           | Customer Router | Internal routing for VLANs |
 
 ## Features Implemented
 
@@ -258,6 +246,3 @@ This lab creates a comprehensive Service Provider network connecting four custom
 - **Route Distinguishers** (per VRF)
 - **Load Balancing** (eibgp multipath)
 - **Prefix Advertisement** (network statements)
-
----
-
